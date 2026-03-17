@@ -35,7 +35,7 @@ public class Main {
             System.out.println("\n===== Removed =====");
             String id2 = "555";
             Student student2 = students.remove(id2);
-            if (id2 != null) {
+            if (student2 != null) {
                 System.out.println("Removed: " + student2.getName());
             } else {
                 System.out.println("Not found");
@@ -84,12 +84,12 @@ public class Main {
 
         Collections.sort(topList, new Comparator<Student>() {
             @Override
-            public int compare(Student a, Student b) {
-                return Double.compare(a.getGpa(), b.getGpa());
+            public int compare(Student b, Student a) {
+                return Double.compare(b.getGpa(), a.getGpa());
             }
         });
-        for(int i = 0; i < 3 && i < list.size(); i++) {
-            System.out.println("bad : " + topList.get(i));
+        for(int i = 0; i < 3 && i < topList.size(); i++) {
+            System.out.println(topList.get(i));
         }
 
         // ====================== TASK 3 ======================
@@ -120,10 +120,32 @@ public class Main {
         courseMap.put(webdev, new ArrayList<Student>());
         courseMap.put(java, new ArrayList<Student>());
 
+        courseMap.get(webdev).add(students.get("111"));
+        courseMap.get(java).add(students.get("222"));
+        courseMap.get(webdev).add(students.get("333"));
+        courseMap.get(java).add(students.get("444"));
+        for(Map.Entry<Course, List<Student>> entry : courseMap.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
 
         // ====================== TASK 5 ======================
         System.out.println("\n=== Task 5: GPA desc + Name ===");
         // TODO: Создай Comparator (GPA убывание → если равно, то имя возрастание) и отсортируй
+        Comparator<Student> gpaSort = new Comparator<Student>() {
+            @Override
+            public int compare(Student a, Student b) {
+                int gpaCompare = Double.compare(b.getGpa(), a.getGpa());
+                if(gpaCompare != 0) return gpaCompare;
+
+                return a.getName().compareTo(b.getName());
+            }
+        };
+        List<Student> list2 = new ArrayList<>(students.values());
+        Collections.sort(list2, gpaSort);
+        for(Student s : list2) {
+            System.out.println(s);
+        }
     }
 }
 
